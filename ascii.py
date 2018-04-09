@@ -70,6 +70,6 @@ def createAscii(fileName, outputWidth):
 
     writeFile(fileName, output)
 
-fileName = 'sahai'
+fileName = '../adithyaj'
 outputWidth = 100
 createAscii(fileName, outputWidth)
