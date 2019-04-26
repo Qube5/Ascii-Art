@@ -3,6 +3,24 @@ from skimage import io
 from skimage import filters
 import math
 
+
+def main():
+    fileName = '../adithyaj'
+    outputWidth = 100
+    mapping = {
+        0.1 : "0", #█
+        0.2 : "8", #▇
+        0.3 : "6", #▆
+        0.4 : "4", #▅
+        0.5 : "2", #▄
+        0.6 : "1", #▃
+        0.7 : "a", #▂
+        0.8 : "i", #▁
+        0.9 : ":", #▁
+        1.0 : ".", #
+    }
+    createAscii(fileName, outputWidth)
+
 def displayImage(img):
     io.imshow(img)
     io.show()
@@ -18,18 +36,6 @@ def getDims(img, width):
     return width, height
 
 def process(average):
-    mapping = {
-        0.1 : "0",
-        0.2 : "8",
-        0.3 : "6",
-        0.4 : "4",
-        0.5 : "2",
-        0.6 : "1",
-        0.7 : "i",
-        0.8 : "a",
-        0.9 : "i",
-        1.0 : ".",
-    }
     value = min(mapping, key = lambda x: abs(x-average))
     return mapping[value] + mapping[value]
 
@@ -42,14 +48,6 @@ def writeFile(fileName, output):
     file = open(fileName+'.txt','w')
     file.write(output)
 
-def getAverage(x, y, width, height, img):
-    sum = 0
-    for i in range(width):
-        for j in range(height):
-            sum += img[x * width + i, y * height + j]
-    average = sum / (width * height)
-    return average
-
 def genOutput(width, height, img):
     output = ""
     for x in range(math.floor(len(img[:,0]) / width)):
@@ -59,17 +57,21 @@ def genOutput(width, height, img):
         output += "\n"
     return output
 
+def getAverage(x, y, width, height, img):
+    sum = 0
+    for i in range(width):
+        for j in range(height):
+            sum += img[x * width + i, y * height + j]
+    average = sum / (width * height)
+    return average
+
 def createAscii(fileName, outputWidth):
     img = processImg(fileName)
     width, height = getDims(img, outputWidth)
     # width, height = 1, 1 # actual pixel for pixel size
-
     output = genOutput(width, height, img)
-
     print(output)
-
     writeFile(fileName, output)
 
-fileName = '../adithyaj'
-outputWidth = 100
-createAscii(fileName, outputWidth)
+if __name__ == "__main__":
+    main()
